@@ -13,6 +13,10 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=users
+    networks:
+      user-auth-network:
+        aliases:
+          - api
 
   db:
     image: postgres
@@ -26,6 +30,14 @@ services:
       - '5432:5432'
     volumes:
       - postgres_data:/var/lib/postgresql/data/
+    networks:
+      user-auth-network:
+        aliases:
+          - db
 
 volumes:
   postgres_data:
+
+networks:
+  user-auth-network:
+    driver: bridge

@@ -11,7 +11,7 @@ class UserSchema(BaseModel):
     updated_at: str
 
 class PaginatedUser(BaseModel):
-    data: List[UserSchema] | None
+    data: List[UserSchema]
     page: int
     total_pages: int
     total: int

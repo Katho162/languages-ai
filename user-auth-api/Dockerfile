@@ -8,7 +8,11 @@ WORKDIR /app
 COPY . /app
 
 # Install any needed packages specified in requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+RUN \
+ apk add --no-cache postgresql-libs && \
+ apk add --no-cache --virtual .build-deps gcc musl-dev postgresql-dev && \
+ python3 -m pip install -r requirements.txt --no-cache-dir && \
+ apk --purge del .build-deps
 
 # Expose the port that the application will listen on
 EXPOSE 8000

@@ -16,7 +16,7 @@ spec:
         - name: web
           image: web:1.0 # Replace this with the actual name of your image
           ports:
-            - containerPort: {{ .Values.service.port }}
+            - containerPort: { { .Values.service.port } }
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -33,7 +33,38 @@ spec:
         app: user-auth-deployment
     spec:
       containers:
+        - name: postgres-container
+          image: postgres:13-alpine
+          envFrom:
+            - configMapRef:
+                name: users-auth-db-config
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - name: user-auth-db-data
+              mountPath: /var/lib/postgresql/data
         - name: user-auth-api
-          image: user-auth:1.0 # Replace this with the actual name of your image
+          image: user-auth:1.0
           ports:
             - containerPort: 8000
+          env:
+            - name: POSTGRES_HOST
+              value: localhost
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: users-auth-db-config
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: users-auth-db-config
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: users-auth-db-config
+                  key: POSTGRES_DB
+        volumes:
+          - name: user-auth-db-data
+            emptyDir: {}

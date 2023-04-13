@@ -23,3 +23,15 @@ spec:
       port: 8000
       targetPort: 8000
   type: LoadBalancer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-auth-db-service
+spec:
+  selector:
+    app: user-auth-db-service
+  ports:
+    - name: user-auth-db-service
+      port: 5432
+      targetPort: 5432

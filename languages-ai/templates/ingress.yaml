@@ -1,25 +1,25 @@
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: languages-ingress
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
-spec:
-  rules:
-    - host: languages-ingress.localhost # Replace this with your desired hostname
-      http:
-        paths:
-          - path: /users-auth
-            pathType: Prefix
-            backend:
-              service:
-                name: users-auth-service
-                port:
-                  name: http
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: web-service
-                port:
-                  name: http
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: languages-ingress
+#   annotations:
+#     nginx.ingress.kubernetes.io/rewrite-target: /
+# spec:
+#   rules:
+#     - host: languages-ingress.localhost # Replace this with your desired hostname
+#       http:
+#         paths:
+#           - path: /users-auth
+#             pathType: Prefix
+#             backend:
+#               service:
+#                 name: users-auth-service
+#                 port:
+#                   name: http
+#           - path: /
+#             pathType: Prefix
+#             backend:
+#               service:
+#                 name: web-service
+#                 port:
+#                   name: http
