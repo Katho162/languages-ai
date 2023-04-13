@@ -9,7 +9,7 @@ First you need to install [Python](https://www.python.org/). After that, being s
 Everything done? You can start the app by using:
 
 ```
-$ uvicorn src.app.main:app --reload
+$ uvicorn src.main:app --reload
 ```
 
 ## Jupyter Nootbook
