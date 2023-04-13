@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  nlmt-engine-api:
+    build:
+      context: .
+    container_name: nlmt-engine-api
+    ports:
+      - "8001:8001"
