@@ -1,14 +1,12 @@
-
-kind create cluster --name languages-ai
+# Create kind cluster
+kind create cluster --config=./manifest.yaml --name languages-ai
 
 cd web
 
+# Build images and load to the cluster
 docker build -t web:1.0 . && kind load docker-image web:1.0 --name languages-ai
 
 cd ..
 
-kubectl run languages-ai-deployment --image=web:1.0 --label web
-
-kubectl expose web --port=3000 --type=NodePort
-
-kubectl create -f ./manifest.yaml
+# Apply the deployment and services config
+kubectl apply -f ./manifest.yaml
