@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: web-deployment
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app: web-deployment
@@ -17,3 +17,23 @@ spec:
           image: web:1.0 # Replace this with the actual name of your image
           ports:
             - containerPort: {{ .Values.service.port }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-auth-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: user-auth-deployment
+  template:
+    metadata:
+      labels:
+        app: user-auth-deployment
+    spec:
+      containers:
+        - name: user-auth-api
+          image: user-auth:1.0 # Replace this with the actual name of your image
+          ports:
+            - containerPort: 8000
