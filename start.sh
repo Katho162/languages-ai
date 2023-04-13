@@ -1,5 +1,5 @@
 # Create kind cluster
-kind create cluster --config=./manifest.yaml --name languages-ai
+kind create cluster --config=./kind-config.yaml --name languages-ai
 
 cd web
 
