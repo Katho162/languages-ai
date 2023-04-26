@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, TIMESTAMP
+from sqlalchemy import Column, Integer, String, DateTime, MetaData, TIMESTAMP
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.sql import func
 
@@ -8,6 +8,8 @@ from ..config.engine import Base
 
 class User(Base):
     __tablename__ = 'users'
+
+    meta = MetaData(schema="auth")
 
     id : str = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4())
     username : str = Column(String, unique=True)

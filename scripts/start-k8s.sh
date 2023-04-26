@@ -17,11 +17,11 @@ helm install ingress-nginx ingress-nginx/ingress-nginx \
 cd web
 
 # Build images and load to the cluster
-docker build -t web:1.0 . && kind load docker-image web:1.0 -n languages-ai
+docker build -t web:1.0 . && docker run --name languages-ai-web -p 80:3000 --env MODE=local-k8s web:1.0
 
 # cd .. && cd user-auth-api
 
-# docker build -t user-auth:1.0 . && kind load docker-image user-auth:1.0 --name languages-ai
+docker build -t user-auth:1.0 . && kind load docker-image user-auth:1.0 --name languages-ai
 
 cd ..
 

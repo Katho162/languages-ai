@@ -1,0 +1,72 @@
+version: '3'
+
+services:
+  auth-api:
+    build:
+      context: ./user-auth-api
+    container_name: auth-api
+    ports:
+      - "8000:8000"
+    depends_on:
+      - languages-db
+    environment:
+      - POSTGRES_HOST=languages-db:5432
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=languages_ai
+      - POSTGRES_SCHEMA=auth
+      - MODE=DEV
+    networks:
+      languages:
+        aliases:
+          - api
+  engine-api:
+    build:
+      context: ./nlmt-engine-api
+    container_name: engine-api
+    ports:
+      - "8001:8000"
+    environment:
+      - MODE=DEV
+    networks:
+      languages:
+        aliases:
+          - engine
+  web:
+    build:
+      context: ./web
+    container_name: web
+    ports:
+      - "80:3000"
+    depends_on:
+      - auth-api
+    environment:
+      - AUTH_API_URL=http://localhost:8000/
+      - MODE=DEV
+    networks:
+      languages:
+        aliases:
+          - web
+  languages-db:
+    image: postgres
+    restart: always
+    container_name: languages-db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=languages_ai
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    networks:
+      languages:
+        aliases:
+          - db
+
+volumes:
+  postgres_data:
+
+networks:
+  languages:
+    driver: bridge
