@@ -16,6 +16,7 @@ async def create_user(db: Session, user: CreateUser):
         fullname=user.fullname,
         birthdate=user.birthdate
     )
+    _user.set_password(user.pwd)
     db.add(_user)
     db.commit()
     db.refresh(_user)

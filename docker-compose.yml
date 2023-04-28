@@ -16,6 +16,8 @@ services:
       - POSTGRES_DB=languages_ai
       - POSTGRES_SCHEMA=auth
       - MODE=DEV
+      - JWT_SECRET=language_ai
+      - JWT_ALGORITHM=HS256
     networks:
       languages:
         aliases:

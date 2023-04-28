@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 from ..users.model import User
 from ..users.schema import UserSchema, PaginatedUser, CreateUser, UpdateUser
 from ..users import crud
+from ..auth.bearer import JWTBearer
 
 def get_db():
     db = SessionLocal()
@@ -23,7 +24,7 @@ router = APIRouter(
     }
 )
 
-@router.get("/")
+@router.get("/", dependencies=[Depends(JWTBearer())])
 async def get_users(page: int = 1, limit: int = 100, db: Session = Depends(get_db)):
     _users = await crud.get_users(db, page, limit)
     count = db.query(User).count()
@@ -46,7 +47,6 @@ async def update_user(user_id: str, data: UpdateUser, db: Session = Depends(get_
     _user = await crud.update_user(db, user_id, data)
     return _user
 
-@router.post('/',  response_model=UserSchema)
+@router.post('/')
 async def create_user(data : CreateUser, db: Session = Depends(get_db)):
-    await crud.create_user(db, data)
-    return []
+    return await crud.create_user(db, data)
